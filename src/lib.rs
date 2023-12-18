@@ -125,13 +125,30 @@ impl Config {
     /// Instantiates the config file given a path to the RSA file as well as the rest of the config
     /// args.
     pub fn new<T: AsRef<str>>(
-        key: T,
+        key_path: T,
         api_key: &str,
         account_id: &str,
         chain_id: u64,
     ) -> Result<Self> {
-        let rsa_pem = std::fs::read(key.as_ref())?;
+        let rsa_pem = std::fs::read(key_path.as_ref())?;
         let key = EncodingKey::from_rsa_pem(&rsa_pem)?;
+
+        Ok(Self {
+            key,
+            chain_id,
+            api_key: api_key.to_string(),
+            account_id: account_id.to_string(),
+        })
+    }
+
+    /// Instantiates the config file given bytes key as well as the rest of the config args.
+    pub fn new_with_bytes_key(
+        key_bytes: &[u8],
+        api_key: &str,
+        account_id: &str,
+        chain_id: u64,
+    ) -> Result<Self> {
+        let key = EncodingKey::from_rsa_pem(key_bytes)?;
 
         Ok(Self {
             key,
@@ -157,6 +174,7 @@ impl FireblocksSigner {
             3 => "ETH_TEST",
             5 => "ETH_TEST3",
             42 => "ETH_TEST2",
+            137 => "MATIC_POLYGON",
             _ => panic!("Unsupported chain_id"),
         };
 
