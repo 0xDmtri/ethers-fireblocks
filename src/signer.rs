@@ -7,8 +7,10 @@ use crate::{
 };
 use async_trait::async_trait;
 use ethers_core::{
-    types::{transaction::{eip2718::TypedTransaction, eip712::Eip712}, 
-        Address, Signature, H256, U256, },
+    types::{
+        transaction::{eip2718::TypedTransaction, eip712::Eip712},
+        Address, Signature, H256, U256,
+    },
     utils::hash_message,
 };
 use ethers_signers::{to_eip155_v, Signer};

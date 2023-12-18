@@ -3,7 +3,8 @@ use crate::{
     jwtclient::JwtSigner,
     types::{
         AssetResponse, CreateTransactionResponse, CreateVaultRequest, CreateVaultResponse,
-        DepositAddressResponse, TransactionArguments, TransactionDetails, VaultAccountResponse, VaultAccountPaginatedResponse,
+        DepositAddressResponse, TransactionArguments, TransactionDetails,
+        VaultAccountPaginatedResponse, VaultAccountResponse,
     },
     FireblocksError, Result,
 };
@@ -54,7 +55,7 @@ impl FireblocksClient {
 impl FireblocksClient {
     async fn get<R: DeserializeOwned>(&self, path: &str) -> Result<R> {
         let path = format!("/{}/{}", self.version, path);
-        let req = self.client.get(&format!("{}{}", self.url, path));
+        let req = self.client.get(format!("{}{}", self.url, path));
         self.send(&path, req, ()).await
     }
 
@@ -62,7 +63,7 @@ impl FireblocksClient {
         let path = format!("/{}/{}", self.version, path);
         let req = self
             .client
-            .post(&format!("{}{}", self.url, path))
+            .post(format!("{}{}", self.url, path))
             .json(&body);
         self.send(&path, req, body).await
     }
