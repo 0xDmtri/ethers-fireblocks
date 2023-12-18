@@ -2,7 +2,7 @@ use ethers_core::types::{
     transaction::eip2718::TypedTransaction, Address, BlockId, Bytes, NameOrAddress, Signature,
     TxHash,
 };
-use ethers_providers::{MiddlewareError, Middleware, PendingTransaction};
+use ethers_providers::{Middleware, MiddlewareError, PendingTransaction};
 use ethers_signers::Signer;
 
 use crate::{
@@ -30,6 +30,11 @@ impl<M: Middleware> FireblocksMiddleware<M> {
     pub fn new(inner: M, fireblocks: FireblocksSigner) -> Self {
         Self { inner, fireblocks }
     }
+
+    /// Gets Fireblocks' Signer address
+    pub fn get_address(&self) -> Address {
+        self.fireblocks.address()
+    }
 }
 
 // Boilerplate
@@ -55,7 +60,6 @@ pub enum FireblocksMiddlewareError<M: Middleware> {
     #[error("{0}")]
     MiddlewareError(M::Error),
 }
-
 
 #[async_trait]
 impl<M: Middleware> Middleware for FireblocksMiddleware<M> {
